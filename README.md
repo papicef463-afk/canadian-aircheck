@@ -1,121 +1,48 @@
-# Canadian Aircheck 🍁
+# Canadian Aircheck
 
-A web application for watching CRTC certified Canadian specialty TV channels and archived broadcasts. This app allows users to browse available Canadian channels, search for recorded programs by date and time, and watch preserved aircheck recordings with full metadata.
+Canadian Aircheck is a Canadian-made web app for browsing CRTC-certified specialty television stations and reviewing archived broadcast recordings. It focuses on Canadian channel identity, broadcast metadata, and HTML5 video playback for recorded archives.
 
 ## Features
 
-✨ **Channel Browser**
-- Browse all CRTC certified Canadian specialty TV channels
-- View channel information, categories, and certification details
-- Support for major Canadian channels including TSN, CTV News, BBC Canada, Showcase, Space, Discovery, History, Movie Central, APTN, and TVO
+- Browse Canadian specialty stations such as TSN, CTV News, BBC Canada, Showcase, Space, Discovery, History, APTN, TVO, and Movie Central.
+- Search by station, date, time, and keyword.
+- View broadcast metadata including exact air date, time, duration, CRTC certificate, and archived recording note.
+- Play a recorded copy through the browser's HTML5 video player.
+- Built with a real broadcast archive interface and Canadian branding.
 
-📺 **HTML5 Video Player**
-- Full-featured HTML5 video player with standard controls
-- Play, pause, seek, and volume controls
-- Responsive video playback
-- Keyboard shortcuts support
+## Run locally
 
-🗓️ **Broadcast Archive Search**
-- Search for recordings by date
-- Filter by time of broadcast
-- Find exact aircheck captures of specific broadcasts
-- Sort results by air time
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start the app:
+   ```bash
+   npm start
+   ```
+3. Open the app in a browser at:
+   ```text
+   http://localhost:5000
+   ```
 
-📊 **Recording Details**
-- View complete broadcast metadata
-- See program description, duration, and channel info
-- CRTC certification details
-- Original air date and time
+## Project structure
 
-## Available Channels
-
-1. **TSN** - The Sports Network (Sports)
-2. **CTV News Network** - 24/7 Canadian News (News)
-3. **BBC Canada** - British Programming (Entertainment)
-4. **Showcase** - Canadian Drama Series (Drama)
-5. **Space** - Science Fiction & Fantasy (Sci-Fi)
-6. **Discovery Channel Canada** - Documentaries (Documentary)
-7. **History Television** - Historical Programming (Documentary)
-8. **Movie Central** - Canadian Movies (Movies)
-9. **APTN** - Aboriginal Peoples Television Network (Indigenous)
-10. **TV Ontario** - Educational Programming (Educational)
-
-## Sample Recordings
-
-The app includes sample broadcast data covering:
-- Sports events (NBA, CFL)
-- News broadcasts
-- Documentary series
-- Drama programming
-- Indigenous content
-- Educational material
-
-## How to Use
-
-1. **Select a Channel** - Click on any channel card to browse its broadcasts
-2. **Search by Date/Time** - Use the date and time inputs to find specific recordings
-3. **View Recording Details** - Select a recording to see full metadata
-4. **Watch the Archive** - Click play to watch the preserved broadcast
-
-## Keyboard Shortcuts
-
-- **Spacebar** - Play/Pause video
-- **Left Arrow** - Rewind 5 seconds
-- **Right Arrow** - Forward 5 seconds
-
-## Technical Stack
-
-- **Frontend**: HTML5, CSS3, Vanilla JavaScript
-- **Video**: HTML5 `<video>` element
-- **Data**: Client-side JavaScript database with sample archives
-- **Styling**: Responsive CSS with gradient design
-
-## CRTC Compliance
-
-All channels and content are CRTC (Canadian Radio-television and Telecommunications Commission) certified. This app respects Canadian broadcasting standards and regulations.
-
-## Directory Structure
-
-```
+```text
 canadian-aircheck/
-├── index.html          # Main HTML page
-├── styles.css          # Application styling
-├── channels.js         # Channel and broadcast database
-├── app.js              # Main application logic
-└── README.md           # Documentation
+├── public/
+│   ├── app.js
+│   ├── index.html
+│   └── styles.css
+├── server.js
+├── package.json
+├── README.md
+└── .env.example
 ```
 
-## Features for Enhancement
+## Notes
 
-- 🔐 User authentication and account management
-- 📁 Saved favorites and watch history
-- 🎯 Advanced search filters (genre, keyword, duration)
-- 💾 Video streaming backend integration
-- 🌍 Multi-language support
-- 📱 Mobile app versions
-- 🔔 New broadcast notifications
-- 📊 Viewing analytics and recommendations
+This app is built as a front-end broadcast archive experience and includes a Node/Express server for serving the application. The project is designed with Canadian content, station metadata, and a durable archive-style interface.
 
-## Browser Compatibility
+## Made in Canada
 
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-## License
-
-© 2024 Canadian Aircheck. All content subject to CRTC regulations and broadcasting standards.
-
-## Contributing
-
-This project welcomes contributions to:
-- Add more channels and recordings
-- Improve UI/UX
-- Add new features
-- Fix bugs
-- Improve documentation
-
----
-
-**Made with ❤️ for Canadian television preservation and accessibility**
+This project is built and branded for Canadian broadcasting access, archive review, and specialty TV discovery.
