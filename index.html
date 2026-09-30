@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canadian Aircheck - CRTC Certified Specialty TV Channels</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>🍁 Canadian Aircheck</h1>
+            <p>Watch CRTC Certified Canadian Specialty TV Channels & Archived Broadcasts</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Channel Selection -->
+        <section class="channels-section">
+            <h2>Available Channels</h2>
+            <div class="channel-grid" id="channelGrid">
+                <!-- Channels will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Selected Channel & Video Player -->
+        <section class="player-section">
+            <div class="player-wrapper">
+                <div class="video-container">
+                    <video id="videoPlayer" controls>
+                        <source src="" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="player-info">
+                    <h3 id="channelName">Select a channel to begin</h3>
+                    <p id="broadcastInfo">Choose a broadcast date and time</p>
+                </div>
+            </div>
+
+            <!-- Broadcast Schedule Selector -->
+            <div class="schedule-section">
+                <h3>Broadcast Archive</h3>
+                <div class="schedule-controls">
+                    <div class="control-group">
+                        <label for="dateInput">Date:</label>
+                        <input type="date" id="dateInput">
+                    </div>
+                    <div class="control-group">
+                        <label for="timeInput">Time:</label>
+                        <input type="time" id="timeInput">
+                    </div>
+                    <button id="searchButton" class="btn-primary">Search Recording</button>
+                </div>
+
+                <!-- Recordings List -->
+                <div class="recordings-list" id="recordingsList">
+                    <p class="placeholder">No recordings found. Select a date and time above.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recording Details -->
+        <section class="details-section" id="detailsSection" style="display: none;">
+            <h3>Recording Details</h3>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <span class="label">Channel:</span>
+                    <span id="detailChannel" class="value">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Broadcast Date:</span>
+                    <span id="detailDate" class="value">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Broadcast Time:</span>
+                    <span id="detailTime" class="value">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Duration:</span>
+                    <span id="detailDuration" class="value">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">CRTC Certification:</span>
+                    <span id="detailCertification" class="value">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Program Description:</span>
+                    <span id="detailDescription" class="value">-</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Canadian Aircheck. All content subject to CRTC regulations and broadcasting standards.</p>
+    </footer>
+
+    <script src="channels.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
