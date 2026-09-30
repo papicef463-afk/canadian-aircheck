@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canadian Aircheck - CRTC Certified Specialty TV Channels</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 40px 0;
+        }
+
+        section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2, h3 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+        }
+
+        .channel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .channel-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            text-align: center;
+            border: 3px solid transparent;
+        }
+
+        .channel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .channel-card.active {
+            border-color: #ffd700;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            box-shadow: 0 8px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .channel-card h3 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .channel-card p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .channel-cert {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            aspect-ratio: 16 / 9;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+        }
+
+        .player-info h3 {
+            color: #1e3c72;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .player-info p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .schedule-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .control-group input {
+            padding: 10px 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .control-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .recordings-list {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .recording-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .recording-item:last-child {
+            border-bottom: none;
+        }
+
+        .recording-item:hover {
+            background: #f5f5f5;
+        }
+
+        .recording-item.active {
+            background: #e8eaf6;
+            border-left: 4px solid #667eea;
+        }
+
+        .recording-info h4 {
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+
+        .recording-info p {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 3px 0;
+        }
+
+        .recording-duration {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .placeholder {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-style: italic;
+        }
+
+        .details-section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .detail-item {
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }
+
+        .detail-item .label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-item .value {
+            display: block;
+            color: #666;
+            font-size: 1rem;
+            word-break: break-word;
+        }
+
+        .admin-section {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            border: 1px solid #c3e6cb;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .channel-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .schedule-controls {
+                flex-direction: column;
+            }
+
+            .schedule-controls .btn {
+                width: 100%;
+            }
+
+            .recording-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .recording-duration {
+                margin-top: 10px;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>🍁 Canadian Aircheck</h1>
+            <p>Watch CRTC Certified Canadian Specialty TV Channels & Archived Broadcasts</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Channel Selection -->
+        <section class="channels-section">
+            <h2>Available Channels</h2>
+            <div class="channel-grid" id="channelGrid">
+                <div class="placeholder">Loading channels...</div>
+            </div>
+        </section>
+
+        <!-- Video Player -->
+        <section class="player-section">
+            <div class="player-wrapper">
+                <div class="video-container">
+                    <video id="videoPlayer" controls>
+                        <source src="" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="player-info">
+                    <h3 id="channelName">Select a channel to begin</h3>
+                    <p id="broadcastInfo">Choose a broadcast date and time</p>
+                </div>
+            </div>
+
+            <!-- Broadcast Schedule Selector -->
+            <div class="schedule-section">
+                <h3>Broadcast Archive</h3>
+                <div class="schedule-controls">
+                    <div class="control-group">
+                        <label for="dateInput">Date:</label>
+                        <input type="date" id="dateInput">
+                    </div>
+                    <div class="control-group">
+                        <label for="timeInput">Time:</label>
+                        <input type="time" id="timeInput">
+                    </div>
+                    <button id="searchButton" class="btn">Search Recording</button>
+                </div>
+
+                <!-- Recordings List -->
+                <div class="recordings-list" id="recordingsList">
+                    <p class="placeholder">No recordings found. Select a date and time above.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recording Details -->
+        <section class="details-section" id="detailsSection" style="display: none;">
+            <h3>Recording Details</h3>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <span class="label">Channel:</span>
+                    <span id="detailChannel" class="value">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Broadcast Date:</span>
+                    <span id="detailDate" class="value">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Broadcast Time:</span>
+                    <span id="detailTime" class="value">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Duration:</span>
+                    <span id="detailDuration" class="value">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">CRTC Certification:</span>
+                    <span id="detailCertification" class="value">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Program Description:</span>
+                    <span id="detailDescription" class="value">-</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Section -->
+        <section class="admin-section">
+            <h2>Admin Panel - Upload New Recording</h2>
+            <div id="adminMessage"></div>
+            <form id="uploadForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="uploadTitle">Program Title *</label>
+                        <input type="text" id="uploadTitle" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="uploadChannel">Channel *</label>
+                        <select id="uploadChannel" name="channelId" required>
+                            <option value="">Select Channel</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="uploadDate">Broadcast Date *</label>
+                        <input type="date" id="uploadDate" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="uploadTime">Broadcast Time *</label>
+                        <input type="time" id="uploadTime" name="time" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="uploadDuration">Duration (minutes) *</label>
+                        <input type="number" id="uploadDuration" name="duration" min="1" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="uploadDescription">Description</label>
+                    <textarea id="uploadDescription" name="description"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="uploadProgram">Program Name</label>
+                        <input type="text" id="uploadProgram" name="program">
+                    </div>
+                    <div class="form-group">
+                        <label for="uploadCRTC">CRTC Certification *</label>
+                        <input type="text" id="uploadCRTC" name="crtcCert" placeholder="e.g. CRTC-TSN-2024" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="uploadVideo">Video File (MP4) *</label>
+                    <input type="file" id="uploadVideo" name="video" accept="video/mp4" required>
+                </div>
+
+                <button type="submit" class="btn">Upload Recording</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Canadian Aircheck. All content subject to CRTC regulations and broadcasting standards.</p>
+    </footer>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000/api';
+
+        let selectedChannel = null;
+        let selectedRecording = null;
+        let allChannels = [];
+
+        /**
+         * Initialize the application
+         */
+        async function initApp() {
+            await loadChannels();
+            setupEventListeners();
+            setDateInputDefault();
+            populateChannelSelect();
+        }
+
+        /**
+         * Set default date to today
+         */
+        function setDateInputDefault() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('dateInput').value = today;
+        }
+
+        /**
+         * Load channels from API
+         */
+        async function loadChannels() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/channels`);
+                allChannels = await response.json();
+                renderChannels();
+            } catch (error) {
+                console.error('Error loading channels:', error);
+                document.getElementById('channelGrid').innerHTML = 
+                    '<p class="placeholder error">Failed to load channels. Check server connection.</p>';
+            }
+        }
+
+        /**
+         * Render channels to grid
+         */
+        function renderChannels() {
+            const channelGrid = document.getElementById('channelGrid');
+            channelGrid.innerHTML = '';
+
+            allChannels.forEach(channel => {
+                const channelCard = document.createElement('div');
+                channelCard.className = 'channel-card';
+                channelCard.innerHTML = `
+                    <h3>${channel.name}</h3>
+                    <p>${channel.category}</p>
+                    <div class="channel-cert">${channel.callSign}</div>
+                `;
+
+                channelCard.addEventListener('click', () => selectChannel(channel, channelCard));
+                channelGrid.appendChild(channelCard);
+            });
+        }
+
+        /**
+         * Select a channel
+         */
+        async function selectChannel(channel, cardElement) {
+            selectedChannel = channel;
+            selectedRecording = null;
+
+            document.querySelectorAll('.channel-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            cardElement.classList.add('active');
+
+            document.getElementById('channelName').textContent = channel.name;
+            document.getElementById('broadcastInfo').textContent = 
+                `${channel.fullName} - ${channel.description}`;
+
+            await loadChannelRecordings(channel.id);
+            document.querySelector('.player-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        /**
+         * Load recordings for selected channel
+         */
+        async function loadChannelRecordings(channelId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/channels/${channelId}/recordings`);
+                const recordings = await response.json();
+                displayRecordings(recordings);
+            } catch (error) {
+                console.error('Error loading recordings:', error);
+            }
+        }
+
+        /**
+         * Display recordings
+         */
+        function displayRecordings(recordings) {
+            const recordingsList = document.getElementById('recordingsList');
+            recordingsList.innerHTML = '';
+
+            if (recordings.length === 0) {
+                recordingsList.innerHTML = '<p class="placeholder">No recordings found for this channel.</p>';
+                return;
+            }
+
+            recordings.forEach(recording => {
+                const recordingItem = document.createElement('div');
+                recordingItem.className = 'recording-item';
+                if (selectedRecording && selectedRecording.id === recording.id) {
+                    recordingItem.classList.add('active');
+                }
+
+                recordingItem.innerHTML = `
+                    <div class="recording-info">
+                        <h4>${recording.title}</h4>
+                        <p>📅 ${formatDate(recording.date)} at ${formatTime(recording.time)}</p>
+                        <p>📺 ${recording.program}</p>
+                    </div>
+                    <span class="recording-duration">${formatDuration(recording.duration)}</span>
+                `;
+
+                recordingItem.addEventListener('click', () => playRecording(recording));
+                recordingsList.appendChild(recordingItem);
+            });
+        }
+
+        /**
+         * Play selected recording
+         */
+        async function playRecording(recording) {
+            selectedRecording = recording;
+
+            document.querySelectorAll('.recording-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+
+            const videoPlayer = document.getElementById('videoPlayer');
+            videoPlayer.src = recording.videoUrl;
+
+            const channel = allChannels.find(c => c.id === recording.channelId);
+            document.getElementById('channelName').textContent = `${channel.name} - ${recording.title}`;
+            document.getElementById('broadcastInfo').textContent = 
+                `Aired on ${formatDate(recording.date)} at ${formatTime(recording.time)}`;
+
+            updateDetailsSection(recording, channel);
+            document.getElementById('detailsSection').style.display = 'block';
+            videoPlayer.play();
+        }
+
+        /**
+         * Update details section
+         */
+        function updateDetailsSection(recording, channel) {
+            document.getElementById('detailChannel').textContent = channel.name;
+            document.getElementById('detailDate').textContent = formatDate(recording.date);
+            document.getElementById('detailTime').textContent = formatTime(recording.time);
+            document.getElementById('detailDuration').textContent = formatDuration(recording.duration);
+            document.getElementById('detailCertification').textContent = recording.crtcCert;
+            document.getElementById('detailDescription').textContent = recording.description;
+        }
+
+        /**
+         * Setup event listeners
+         */
+        function setupEventListeners() {
+            document.getElementById('searchButton').addEventListener('click', performSearch);
+            document.getElementById('dateInput').addEventListener('change', performSearch);
+            document.getElementById('timeInput').addEventListener('change', performSearch);
+            document.getElementById('uploadForm').addEventListener('submit', handleUpload);
+        }
+
+        /**
+         * Perform search
+         */
+        async function performSearch() {
+            const date = document.getElementById('dateInput').value;
+            const time = document.getElementById('timeInput').value;
+            const channelId = selectedChannel ? selectedChannel.id : null;
+
+            try {
+                const params = new URLSearchParams();
+                if (channelId) params.append('channelId', channelId);
+                if (date) params.append('date', date);
+                if (time) params.append('time', time);
+
+                const response = await fetch(`${API_BASE_URL}/recordings?${params}`);
+                const recordings = await response.json();
+
+                if (recordings.length === 0) {
+                    document.getElementById('recordingsList').innerHTML = 
+                        '<p class="placeholder">No recordings found. Try adjusting your search.</p>';
+                } else {
+                    displayRecordings(recordings);
+                }
+            } catch (error) {
+                console.error('Error searching recordings:', error);
+            }
+        }
+
+        /**
+         * Populate channel select for admin
+         */
+        function populateChannelSelect() {
+            const select = document.getElementById('uploadChannel');
+            allChannels.forEach(channel => {
+                const option = document.createElement('option');
+                option.value = channel.id;
+                option.textContent = channel.name;
+                select.appendChild(option);
+            });
+        }
+
+        /**
+         * Handle file upload
+         */
+        async function handleUpload(e) {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('title', document.getElementById('uploadTitle').value);
+            formData.append('channelId', document.getElementById('uploadChannel').value);
+            formData.append('date', document.getElementById('uploadDate').value);
+            formData.append('time', document.getElementById('uploadTime').value);
+            formData.append('duration', document.getElementById('uploadDuration').value);
+            formData.append('description', document.getElementById('uploadDescription').value);
+            formData.append('program', document.getElementById('uploadProgram').value);
+            formData.append('crtcCert', document.getElementById('uploadCRTC').value);
+            formData.append('video', document.getElementById('uploadVideo').files[0]);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/recordings/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const messageDiv = document.getElementById('adminMessage');
+                if (response.ok) {
+                    messageDiv.innerHTML = '<div class="success">✓ Recording uploaded successfully!</div>';
+                    document.getElementById('uploadForm').reset();
+                    await loadChannels();
+                } else {
+                    const error = await response.json();
+                    messageDiv.innerHTML = `<div class="error">✗ Error: ${error.error}</div>`;
+                }
+            } catch (error) {
+                console.error('Error uploading:', error);
+                document.getElementById('adminMessage').innerHTML = 
+                    `<div class="error">✗ Upload failed: ${error.message}</div>`;
+            }
+        }
+
+        /**
+         * Utility functions
+         */
+        function formatDate(dateStr) {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-CA', options);
+        }
+
+        function formatTime(timeStr) {
+            const [hours, minutes] = timeStr.split(':');
+            const hour = parseInt(hours);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour % 12 || 12;
+            return `${displayHour}:${minutes} ${ampm}`;
+        }
+
+        function formatDuration(minutes) {
+            const hours = Math.floor(minutes / 60);
+            const mins = minutes % 60;
+            if (hours === 0) return `${mins} min`;
+            if (mins === 0) return `${hours} hr`;
+            return `${hours} hr ${mins} min`;
+        }
+
+        /**
+         * Initialize app
+         */
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
